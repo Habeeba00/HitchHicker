@@ -1,0 +1,72 @@
+# Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Django migration files
+*/migrations/*.pyc
+*/migrations/*.pyo
+*/migrations/__pycache__/
+
+# Environment variables
+.env
+
+# Virtual environment directory
+venv/
+env/
+.virtualenv/
+
+# VS Code settings (if using VS Code)
+.vscode/
+
+# Database files
+*.sqlite3
+
+# Logs
+*.log
+*.pot
+*.pid
+
+# Media files (optional, if you store media in your repo)
+media/
+
+# Static files (optional, if you collect static files in your repo)
+staticfiles/
+
+# Ignore compiled files
+*.so
+
+# macOS system files
+.DS_Store
+
+# Node modules (if using Node.js for front-end development)
+node_modules/
+
+# Coverage reports
+htmlcov/
+.coverage
+*.cover
+coverage.xml
+*.coverage
+.cache
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pytest
+.pytest_cache/
+.tox/
+
+# Celery beat schedule file
+celerybeat-schedule
+
+# SSH keys
+*.pem
+
+# JetBrains IDEs (e.g., PyCharm)
+.idea/
+
+# Backup files
+*.bak
