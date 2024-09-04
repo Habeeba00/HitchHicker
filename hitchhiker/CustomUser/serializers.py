@@ -19,6 +19,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 class SignUpSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
     username=serializers.CharField(required=True)
 
     password = serializers.CharField(
@@ -31,7 +32,7 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields=['username','email','phone','password','confirm_password']
+        fields=['id','first_name','last_name','username','email','phone','password','confirm_password']
 
     def validate_username(self, value):
         if CustomUser.objects.filter(username=value).exists():

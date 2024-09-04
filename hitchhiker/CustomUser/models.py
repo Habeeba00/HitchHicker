@@ -3,7 +3,8 @@ from django.contrib.auth.models import PermissionsMixin,AbstractUser
 
 
 class CustomUser(AbstractUser,PermissionsMixin):
-    id=models.AutoField(primary_key=True)
+    first_name=models.CharField(max_length=30)
+    last_name=models.CharField(max_length=30)
     username=models.CharField(max_length=30,unique=True)
     email=models.EmailField(unique=True)
     phone=models.IntegerField()
