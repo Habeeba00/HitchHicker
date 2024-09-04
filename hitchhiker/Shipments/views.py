@@ -18,12 +18,8 @@ class ShipmentsView(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         if request.method == "POST":
-            print("Entered")
             try:
-                adding_user = request.user
-                print(adding_user.username)
-                print(f"Authenticated User ID: {adding_user.id}")
-                
+                adding_user = request.user                
                 serializer = self.get_serializer(data=request.data)
                 serializer.is_valid(raise_exception=True)
                 instance_shipment=serializer.save(added_by=adding_user)
