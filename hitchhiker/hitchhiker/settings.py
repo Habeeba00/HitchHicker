@@ -45,8 +45,7 @@ INSTALLED_APPS = [
     'Shipments.apps.ShipmentsConfig',
     'Trips.apps.TripsConfig',
     'Locations.apps.LocationsConfig',
-    'AvalibleLocations.apps.AvaliblelocationsConfig',
-
+  
 
 ]
 REST_FRAMEWORK = {

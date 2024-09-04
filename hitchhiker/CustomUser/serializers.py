@@ -31,7 +31,7 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields=['username','email','phone','password','confirm_password']
+        fields=['id','username','email','phone','password','confirm_password']
 
     def validate_username(self, value):
         if CustomUser.objects.filter(username=value).exists():

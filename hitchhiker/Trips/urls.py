@@ -1,13 +1,8 @@
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from django.urls import path,include
-# from .views import SignInView ,SignUpView
+from Trips.views import tripViewset
 
+router = DefaultRouter()
+router.register(r'Trips', tripViewset)
 
-router=DefaultRouter()
-# router.register(r'SignUp',SignUpView,basename='SignUp'),
-# router.register(r'SignIn',SignInView,basename='SignIn')
-
-
-urlpatterns=[
-    path('',include(router.urls))
-]
+urlpatterns = router.urls

@@ -28,7 +28,6 @@ urlpatterns = [
     path('Shipments/',include('Shipments.urls')),
     path('Trips/',include('Trips.urls')),
     path('Locations/',include('Locations.urls')),
-    path('AvalibleLocations/',include('AvalibleLocations.urls')),
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
