@@ -13,7 +13,7 @@ class Shipments(models.Model):
     Price=models.FloatField()
     Total_Price=models.FloatField(null=True,blank=True)
     Total_Weight=models.FloatField(null=True,blank=True)
-    image=models.ImageField(null=True,blank=True)
+    image=models.ImageField(upload_to='images/')
     added_by=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
     # Trips=models.ForeignKey(Trips,on_delete=models.CASCADE,null=True,blank=True)
 
