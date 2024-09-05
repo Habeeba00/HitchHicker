@@ -1,8 +1,29 @@
 from django.db import models
-from django_countries.fields import CountryField
 
-# Create your models here.
 class locationModel(models.Model):
+    COUNTRY_CHOICES=(
+        ('UK', 'UK'),
+        ('France', 'France'),
+        ('Australia', 'Australia'),
+        ('Japan', 'Japan'),
+        ('India', 'India'),
+        ('China', 'China'),
+        ('Germany', 'Germany'),
+        ('Spain', 'Spain'),
+        ('Italy', 'Italy'),
+        ('Russian', 'Russian'),
+        ('Greece', 'Greece'),
+        ('Türkiye', 'Türkiye'),
+        ('USA', 'USA'),
+        ('Egypt', 'Egypt'),
+        ('Algiers', 'Algiers'),
+        ('Tunis', 'Tunis'),
+        ('Syrian Arab', 'Syrian Arab'),
+        ('Lebanon', 'Lebanon'),
+        ('Kuwait', 'Kuwait'),
+        ('UAE', 'UAE'),
+        ('Qatar', 'Qatar'),
+    )
     CITY_CHOICES = (
         ('london', 'London'),
         ('paris', 'Paris'),
@@ -10,7 +31,7 @@ class locationModel(models.Model):
         ('Tokyo', 'Tokyo'),
         ('Chennai', 'Chennai'),
         ('Delhi', 'Delhi'),
-        ('Hong_Kong', 'Hong Kong'),
+        ('Hong Kong', 'Hong Kong'),
         ('Berlin', 'Berlin'),
         ('Madrid', 'Madrid'),
         ('Rome', 'Rome'),
@@ -18,30 +39,26 @@ class locationModel(models.Model):
         ('Moscow', 'Moscow'),
         ('Athens', 'Athens'),
         ('Istanbul', 'Istanbul'),
-        ('Los_Angeles', 'Los Angeles'),
+        ('Los Angeles', 'Los Angeles'),
         ('Miami', 'Miami'),
-        ('San_Francisco', 'San Francisco'),
+        ('San Francisco', 'San Francisco'),
         ('Mexico', 'Mexico'),
         ('Cairo', 'Cairo'),
         ('Algiers', 'Algiers'),
-        ('Berlin', 'Berlin'),
         ('Vienna', 'Vienna'),
-        ('Amsterdam', 'Amsterdam'),
         ('Berlin', 'Berlin'),
         ('Alexandria', 'Alexandria'),
         ('Tunis', 'Tunis'),
-        ('Riyadh', 'Riyadh'),
-        ('Jeddah', 'Jeddah'),
         ('Giza', 'Giza'),
         ('Ankara', 'Ankara'),
         ('Beirut', 'Beirut'),
         ('Izmir', 'Izmir'),
         ('Damascus', 'Damascus'),
-        ('Amman', 'Amman'),
         ('Kuwait', 'Kuwait'),
         ('Dubai', 'Dubai'),
-        ('Abu_Dhabi', 'Abu Dhabi'),
+        ('Abu Dhabi', 'Abu Dhabi'),
         ('Doha', 'Doha'),
     )
-    country=CountryField(blank_label="(select country)")
-    city = models.CharField(max_length=50, choices=CITY_CHOICES)
+    country = models.CharField(max_length=50, choices=COUNTRY_CHOICES)
+    city = models.CharField(max_length=50, choices=CITY_CHOICES,unique=True)
+    

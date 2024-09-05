@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Locations.models import locationModel
+from location.models import locationModel
 class locationSerializer(serializers.ModelSerializer):
 
     class Meta:
