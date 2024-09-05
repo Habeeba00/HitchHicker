@@ -8,5 +8,5 @@ class ShipmentsSerializer(serializers.ModelSerializer):
     added_by=SignUpSerializer(read_only=True)
     class Meta:
         model=Shipments
-        fields = ['id','From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price','Total_Price','Total_Weight','image' ,'added_by']
+        fields = ['id','From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price','Total_Price','Total_Weight','image' ,'added_by','Trips']
 
