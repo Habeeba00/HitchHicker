@@ -26,13 +26,12 @@ class ShipmentsView(viewsets.ModelViewSet):
         if request.method == "POST":
             try:
                 adding_user = request.user    
-                username = adding_user.username
                 serializer = self.get_serializer(data=request.data)
                 serializer.is_valid(raise_exception=True)
                 instance_shipment=serializer.save(added_by=adding_user)
                 data = ShipmentsSerializer(instance_shipment).data
-                data['username'] = username
-
+                data['username'] = adding_user.username
+                data.pop('added_by', None)
 
                 return Response(data ,status=status.HTTP_201_CREATED)
             except CustomUser.DoesNotExist:
