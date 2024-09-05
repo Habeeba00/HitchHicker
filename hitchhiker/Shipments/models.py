@@ -16,4 +16,6 @@ class Shipments(models.Model):
     image=models.ImageField(upload_to='images/')
     added_by=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
     # Trips=models.ForeignKey(tripsModel,on_delete=models.CASCADE,null=True,blank=True)
+    class Meta:
+        ordering = ['Date_Befor']
 

@@ -4,6 +4,9 @@ from .models import Shipments
 from .serializers import ShipmentsSerializer
 from rest_framework.permissions import IsAuthenticated
 from CustomUser.models import CustomUser
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter,OrderingFilter
+from .filters import ShipmentsFilter
 
 
 
@@ -11,6 +14,12 @@ class ShipmentsView(viewsets.ModelViewSet):
     queryset=Shipments.objects.all()
     serializer_class=ShipmentsSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
+    search_fields=["From","To",'Date_Befor','Weight']
+    ordering_fields=['Date_Befor',"Shipment_Name"]
+    ordering = ['Date_Befor']
+    filterset_class = ShipmentsFilter
+
 
 
     def create(self, request, *args, **kwargs):
