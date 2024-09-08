@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     'CustomUser.apps.CustomuserConfig',
     'Shipments.apps.ShipmentsConfig',
     'Trips.apps.TripsConfig',
-    'Locations.apps.LocationsConfig'
-]
+    'location'
+    ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
