@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     'Trips.apps.TripsConfig',
     'location'
     ]
+  
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',

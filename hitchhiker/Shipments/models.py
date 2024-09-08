@@ -36,27 +36,4 @@ class Shipments(models.Model):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    # def update(self, trip_id):
-    #     try:
-    #         trip = Trips.objects.get(id=trip_id)
-
-    #         free_weight = trip.FreeWeight - trip.ComsumedWeight
-
-    #         if self.Total_Weight > free_weight:
-    #             raise ValueError(f"Not enough free weight on the trip. Available: {free_weight} kg")
-
-    #         trip.ComsumedWeight += self.Total_Weight
-    #         trip.TotalWeightTrip += self.Total_Weight
-
-    #         self.trips = trip
-    #         self.save()
-
-    #         trip.save()
-
-    #         return True
-
-    #     except Trips.DoesNotExist:
-    #         raise ValueError(f"Trip with id {trip_id} not found")
-
-    #     except Exception as e:
-    #         raise ValueError(f"An error occurred while updating the shipment: {str(e)}")
+   
