@@ -39,37 +39,4 @@ class ShipmentsSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
   
-    # def update(self, instance, validated_data):
-        
-    #     instance.From = validated_data.get('From', instance.From)
-    #     instance.To = validated_data.get('To', instance.To)
-    #     instance.Date_Befor = validated_data.get('Date_Befor', instance.Date_Befor)
-    #     instance.Quantity = validated_data.get('Quantity', instance.Quantity)
-    #     instance.Price = validated_data.get('Price', instance.Price)
-    #     instance.Total_Price = instance.Price * instance.Quantity
-    #     instance.Weight = validated_data.get('Weight', instance.Weight)
-    #     instance.Total_Weight = instance.Quantity *  instance.Weight 
-    #     instance.image = validated_data.get('image', instance.image)
-    #     instance.trips = validated_data.get('trips', instance.trips)
-       
-    #     trip_obj = validated_data.get('trips', None)
-
-    #     if trip_obj is not None:
-    #         free_weight = trip_obj.FreeWeight - trip_obj.ComsumedWeight
-    #         if instance.Total_Weight > free_weight:
-    #             return Response(f"Not enough free weight on the trip. Available: {free_weight} kg")
-
-    #         trip_obj.ComsumedWeight += instance.Total_Weight
-    #         trip_obj.TotalWeightTrip += instance.Total_Weight
-
-    #         instance.trips = trip_obj
-
-    #         trip_obj.save()
-    #         instance.save()
-
-        
-    #     else: 
-    #         return Response({'error': 'Trip with given id not found'}, status=status.HTTP_404_NOT_FOUND)
-    #     return instance
-
-       
+    
