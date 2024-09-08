@@ -20,6 +20,10 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.conf import settings
+from django.conf.urls.static import static
+from CustomUser.views import reset_request,reset_password
+
 
 
 urlpatterns = [
@@ -31,4 +35,8 @@ urlpatterns = [
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('reset-request/', reset_request, name='reset-request'),
+    path('reset-password/', reset_password, name='reset-password'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

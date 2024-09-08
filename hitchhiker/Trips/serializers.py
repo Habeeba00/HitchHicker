@@ -1,14 +1,14 @@
 from rest_framework import serializers
-from Trips.models import tripsModel
-from Shipments.serializers import ShipmentsSerializer
-class tripSerializers(serializers.Serializer):
-    
+from Trips.models import Trips
+
+
+class TripSerializers(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     class Meta:
-        model=tripsModel
+        model=Trips
         fields="__all__"
-        read_only_fields = ['TotolWeight','ComsumedWeight']
+        read_only_fields = ['id','Total_Shipment_Weight','ComsumedWeight']
         
-    def create (self, validated_data):
-        validated_data['TotolWeight'] = validated_data['FreeWeight'] + validated_data['ComsumedWeight']
-        return super().create(validated_data)
-# 
+    # def create (self, validated_data):
+    #     validated_data['TotolWeight'] = validated_data['FreeWeight'] + validated_data['ComsumedWeight']
+    #     return super().create(validated_data)

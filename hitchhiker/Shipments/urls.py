@@ -1,8 +1,11 @@
-from django.urls import path
+from django.urls import path,include
 from .views import ShipmentsView
+from rest_framework.routers import DefaultRouter
 
+router=DefaultRouter()
+router.register(r'Shipments',ShipmentsView)
 
 urlpatterns=[
-    path('Shipments/', ShipmentsView.as_view(), name='Shipments'),
+    path('', include(router.urls)),
 
 ]
