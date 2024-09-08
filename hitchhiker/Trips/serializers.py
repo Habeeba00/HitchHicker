@@ -8,7 +8,3 @@ class TripSerializers(serializers.Serializer):
         model=Trips
         fields="__all__"
         read_only_fields = ['id','Total_Shipment_Weight','ComsumedWeight']
-        
-    # def create (self, validated_data):
-    #     validated_data['TotolWeight'] = validated_data['FreeWeight'] + validated_data['ComsumedWeight']
-    #     return super().create(validated_data)

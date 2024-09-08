@@ -21,22 +21,23 @@ class ShipmentsView(viewsets.ModelViewSet):
     filterset_class = ShipmentsFilter
 
 
-
     def create(self, request, *args, **kwargs):
-        if request.method == "POST":
-            try:
-                adding_user = request.user    
-                serializer = self.get_serializer(data=request.data)
-                serializer.is_valid(raise_exception=True)
-                instance_shipment=serializer.save(added_by=adding_user)
-                data = ShipmentsSerializer(instance_shipment).data
-                data['username'] = adding_user.username
-                data.pop('added_by', None)
-
-                return Response(data ,status=status.HTTP_201_CREATED)
-            except CustomUser.DoesNotExist:
-                return Response({'error': 'CustomUser with given id not found'}, status=status.HTTP_404_NOT_FOUND)
+        try:
+            serializer = ShipmentsSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
             
+            shipment = serializer.save(added_by=request.user)
+            
+            data = serializer.data
+            from_location = shipment.From  
+            data['username'] = request.user.username
+            data['country'] = from_location.country 
+            return Response(data, status=status.HTTP_201_CREATED)
+        except CustomUser.DoesNotExist:
+            return Response({'error': 'CustomUser with given id not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
