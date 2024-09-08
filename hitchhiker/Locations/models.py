@@ -45,3 +45,6 @@ class locationModel(models.Model):
     )
     country=CountryField(blank_label="(select country)")
     city = models.CharField(max_length=50, choices=CITY_CHOICES)
+
+
+   
