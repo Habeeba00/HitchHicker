@@ -7,13 +7,15 @@ from CustomUser.models import CustomUser
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter,OrderingFilter
 from .filters import ShipmentsFilter
+from django.shortcuts import get_object_or_404
+
 
 
 
 class ShipmentsView(viewsets.ModelViewSet):
     queryset=Shipments.objects.all()
     serializer_class=ShipmentsSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
     search_fields=["From","To",'Date_Befor','Weight']
     ordering_fields=['Date_Befor',"Shipment_Name"]
@@ -44,18 +46,27 @@ class ShipmentsView(viewsets.ModelViewSet):
         instance.delete()
         return Response({"message": f"Shipment with id {instance_id} deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
     
-
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
+    def update(self, request, pk):
+        shipment = get_object_or_404(Shipments, pk=pk)
         
-        instance_Name = instance.Shipment_Name
-        serializer.save()
+        serializer = ShipmentsSerializer(shipment, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()  
 
-        return Response(
-            {"message": f"The shipment {instance_Name} has been updated successfully.", "data": serializer.data},
-            status=status.HTTP_200_OK
-        )
+        return Response(serializer.data)
+    
+    
+    # def update(self, request, *args, **kwargs):
+    #     partial = kwargs.pop('partial', False)
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance, data=request.data, partial=partial)
+    #     serializer.is_valid(raise_exception=True)
+        
+    #     instance_Name = instance.Shipment_Name
+    #     serializer.save()
+
+    #     return Response(
+    #         {"message": f"The shipment {instance_Name} has been updated successfully.", "data": serializer.data},
+    #         status=status.HTTP_200_OK
+    #     )
     
