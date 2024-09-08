@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-x0xy8zgvugk76ku^*ers92$1)l)k^9!k1%b=*2ab3y8*!#p$0*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS =['127.0.0.1', 'localhost']
+ALLOWED_HOSTS =['*']
+
 
 
 # Application definition
@@ -46,11 +48,9 @@ INSTALLED_APPS = [
     'CustomUser.apps.CustomuserConfig',
     'Shipments.apps.ShipmentsConfig',
     'Trips.apps.TripsConfig',
-    'location'
-    ]
+    'Locations.apps.LocationsConfig',
   
-
-
+]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',

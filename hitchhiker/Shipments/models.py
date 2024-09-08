@@ -1,14 +1,12 @@
 from django.db import models
 from CustomUser.models import CustomUser
 from Trips.models import Trips
-from location.models import locationModel
-from rest_framework.response import Response
-from rest_framework import status
+from Locations.models import locationModel
 
 
 class Shipments(models.Model):
-    From= models.ForeignKey(locationModel, on_delete=models.CASCADE, related_name="Ship_from_location") 
-    To= models.ForeignKey(locationModel, on_delete=models.CASCADE, related_name="Ship_to_location")
+    From= models.ForeignKey(locationModel, on_delete=models.CASCADE, related_name="Ship_from_location")  
+    To= models.ForeignKey(locationModel, on_delete=models.CASCADE, related_name="Ship_to_location") 
     Date_Befor=models.DateField()
     Shipment_Name=models.CharField(max_length=20)
     Quantity=models.IntegerField()

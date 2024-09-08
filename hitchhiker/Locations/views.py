@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from Locations.models import locationModel
 from Locations.serializers import locationSerializer
 from rest_framework import viewsets
