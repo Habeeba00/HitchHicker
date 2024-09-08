@@ -5,16 +5,15 @@ from rest_framework.response import Response
 from CustomUser.models import CustomUser
 from rest_framework import serializers
 
-from Trips.models import tripsModel
+from Trips.models import Trips
 class tripSerializers(serializers.ModelSerializer):
     shipments = ShipmentsSerializer(many=True, read_only=True)  # Add shipments to trip serializer
 
     class Meta:
-        model=tripsModel
-        fields = ['id','From', 'username','To', 'depart_Date', 'depart_Time', 'TotalWeightTrip', 'ComsumedWeight', 'FreeWeight', 'shipments']
-   
+        model=Trips
+        fields = '__all__'
         def create(self, validated_data):
-            trip = tripsModel.objects.create(
+            trip = Trips.objects.create(
             From=validated_data['From'],
             To=validated_data['To'],
             depart_Date=validated_data['depart_Date'],
@@ -23,6 +22,9 @@ class tripSerializers(serializers.ModelSerializer):
             ComsumedWeight=validated_data.get('ComsumedWeight', 0.0), 
             TotalWeightTrip=validated_data.get('TotalWeightTrip', 0.0)
         )
+            
+            
+
             return trip
     
 
