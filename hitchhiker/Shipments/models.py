@@ -1,14 +1,13 @@
 from django.db import models
 from CustomUser.models import CustomUser
-from Trips.models import Trips
-from location.models import locationModel
+from Trips.models import tripsModel
 from rest_framework.response import Response
 from rest_framework import status
 
 
 class Shipments(models.Model):
-    From= models.ForeignKey(locationModel, on_delete=models.CASCADE, related_name="Ship_from_location") 
-    To= models.ForeignKey(locationModel, on_delete=models.CASCADE, related_name="Ship_to_location")
+    From=models.CharField(max_length=15)
+    To=models.CharField(max_length=15)
     Date_Befor=models.DateField()
     Shipment_Name=models.CharField(max_length=20)
     Quantity=models.IntegerField()
@@ -18,7 +17,7 @@ class Shipments(models.Model):
     Total_Weight=models.FloatField(null=True,blank=True)
     image=models.ImageField(upload_to='images/')
     added_by=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
-    trips=models.ForeignKey(Trips,on_delete=models.CASCADE,null=True,blank=True)
+    Trips=models.ForeignKey(tripsModel,on_delete=models.CASCADE,null=True,blank=True)
     class Meta:
         ordering = ['Date_Befor']
 
@@ -36,27 +35,22 @@ class Shipments(models.Model):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    # def update(self, trip_id):
-    #     try:
-    #         trip = Trips.objects.get(id=trip_id)
+    def add_to_trip(self, trip_id):
+        try:
+            trip = tripsModel.objects.get(id=trip_id)
 
-    #         free_weight = trip.FreeWeight - trip.ComsumedWeight
+            if self.Total_Weight > trip.FreeWeight:
+                raise ValueError(f"Not enough free weight on the trip. Available: {trip.FreeWeight} kg")
 
-    #         if self.Total_Weight > free_weight:
-    #             raise ValueError(f"Not enough free weight on the trip. Available: {free_weight} kg")
+            self.Trips = trip
 
-    #         trip.ComsumedWeight += self.Total_Weight
-    #         trip.TotalWeightTrip += self.Total_Weight
+            trip.ComsumedWeight += self.Total_Weight
+            trip.TotalWeightTrip += self.Total_Weight  
 
-    #         self.trips = trip
-    #         self.save()
+            self.save()
+            trip.save()
 
-    #         trip.save()
+            return True  
 
-    #         return True
-
-    #     except Trips.DoesNotExist:
-    #         raise ValueError(f"Trip with id {trip_id} not found")
-
-    #     except Exception as e:
-    #         raise ValueError(f"An error occurred while updating the shipment: {str(e)}")
+        except tripsModel.DoesNotExist:
+            raise ValueError(f"Trip with id {trip_id} not found")
