@@ -28,13 +28,15 @@ class ShipmentsView(viewsets.ModelViewSet):
         try:
             serializer = ShipmentsSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            
             shipment = serializer.save(added_by=request.user)
             
             data = serializer.data
-            from_location = shipment.From  
+            from_location = shipment.From 
+            to_location = shipment.To  
             data['username'] = request.user.username
-            data['country'] = from_location.country 
+            data['From'] = from_location.city 
+            data['To'] = to_location.city
+            
             return Response(data, status=status.HTTP_201_CREATED)
         except CustomUser.DoesNotExist:
             return Response({'error': 'CustomUser with given id not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -56,6 +58,13 @@ class ShipmentsView(viewsets.ModelViewSet):
         serializer.save()  
 
         return Response(serializer.data)
+    
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     
     
