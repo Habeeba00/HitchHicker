@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'CustomUser.apps.CustomuserConfig',
     'Shipments.apps.ShipmentsConfig',
     'Trips.apps.TripsConfig',
-    'Locations.apps.LocationsConfig',
+    'locations.apps.LocationsConfig'
   
 ]
 REST_FRAMEWORK = {
