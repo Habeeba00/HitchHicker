@@ -12,16 +12,13 @@ def send_email(to_email,subject,body):
 
 
     try:
-        # Establish a connection to the SMTP server
         with smtplib.SMTP('smtp.gmail.com', 587) as s:
-            s.ehlo()  # Identify yourself to the server
-            s.starttls()  # Upgrade the connection to a secure encrypted TLS connection
-            s.ehlo()  # Re-identify yourself as an encrypted connection
+            s.ehlo() 
+            s.starttls()
+            s.ehlo()
 
-            # Login to the SMTP server
             s.login('habibamohamed2222009u665@gmail.com', 'Habiba@01019742210')  # Replace with your actual email password
 
-            # Send the email
             s.send_message(msg)
         
         print('Email sent successfully!')

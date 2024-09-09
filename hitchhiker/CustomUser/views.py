@@ -52,10 +52,8 @@ class OTPRequestView(generics.GenericAPIView):
         email = serializer.validated_data['email']
         user = CustomUser.objects.filter(email=email).first()
 
-        # Generate or retrieve OTP for the user
         otp_instance, created = OTP.objects.get_or_create(user=user)
         if not created:
-            # Regenerate OTP if it already exists
             otp_instance.save()
 
         return Response({"otp": otp_instance.otp}, status=status.HTTP_200_OK)
