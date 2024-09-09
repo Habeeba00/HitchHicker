@@ -3,8 +3,8 @@ from .models import Shipments
 from rest_framework.response import Response
 from rest_framework import status
 from CustomUser.serializers import SignUpSerializer
-from Locations.serializers import locationSerializer
-from Locations.models import locationModel
+from locations.serializers import locationSerializer
+from locations.models import locationModel
 
 
 

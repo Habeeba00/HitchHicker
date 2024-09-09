@@ -8,6 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter,OrderingFilter
 from .filters import ShipmentsFilter
 from django.shortcuts import get_object_or_404
+from Trips.serializers import tripSerializers
 
 
 
@@ -15,7 +16,7 @@ from django.shortcuts import get_object_or_404
 class ShipmentsView(viewsets.ModelViewSet):
     queryset=Shipments.objects.all()
     serializer_class=ShipmentsSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
     search_fields=["From","To",'Date_Befor','Weight']
     ordering_fields=['Date_Befor',"Shipment_Name"]
@@ -57,17 +58,35 @@ class ShipmentsView(viewsets.ModelViewSet):
         return Response(serializer.data)
     
     
-    # def update(self, request, *args, **kwargs):
-    #     partial = kwargs.pop('partial', False)
-    #     instance = self.get_object()
-    #     serializer = self.get_serializer(instance, data=request.data, partial=partial)
-    #     serializer.is_valid(raise_exception=True)
-        
-    #     instance_Name = instance.Shipment_Name
-    #     serializer.save()
+    
+    
+def update(self, request, *args, **kwargs):
+    partial = kwargs.pop('partial', False)
+    instance = self.get_object()
+    serializer = self.get_serializer(instance, data=request.data, partial=partial)
+    serializer.is_valid(raise_exception=True)
+    
+    # Store the shipment name before updating
+    instance_Name = instance.Shipment_Name
+    
+    # Save the shipment update
+    serializer.save()
 
-    #     return Response(
-    #         {"message": f"The shipment {instance_Name} has been updated successfully.", "data": serializer.data},
-    #         status=status.HTTP_200_OK
-    #     )
+    # Handle Trip Data if provided in the request
+    trip_data = request.data.get('trip')  # Assuming the trip data comes in 'trip' key
+    if trip_data:
+        # Validate and process trip data
+        trip_serializer = tripSerializers(data=trip_data)
+        if trip_serializer.is_valid():
+            trip_instance = trip_serializer.save()
+            # Add the trip to the shipment instance
+            instance.trip = trip_instance
+            instance.save()
+        else:
+            return Response(trip_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    return Response(
+        {"message": f"The shipment {instance_Name} has been updated successfully with the trip.", "data": serializer.data},
+        status=status.HTTP_200_OK
+    )
     
