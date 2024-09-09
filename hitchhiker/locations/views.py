@@ -1,5 +1,5 @@
-from Locations.models import locationModel
-from Locations.serializers import locationSerializer
+from locations.models import locationModel
+from locations.serializers import locationSerializer
 from rest_framework import viewsets
 
 class locationViewset(viewsets.ModelViewSet):

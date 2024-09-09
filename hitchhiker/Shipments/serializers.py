@@ -3,8 +3,8 @@ from .models import Shipments
 from rest_framework.response import Response
 from rest_framework import status
 from CustomUser.serializers import SignUpSerializer
-from Locations.serializers import locationSerializer
-from Locations.models import locationModel
+from locations.serializers import locationSerializer
+from locations.models import locationModel
 
 
 
@@ -17,6 +17,8 @@ class ShipmentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shipments
         fields = ['id', 'From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price', 'Total_Price', 'Total_Weight', 'image', 'added_by', 'Trips']
+        exclude = ['trips'] 
+
 
     def create(self, validated_data):
         # Check if 'From' exists in the validated data

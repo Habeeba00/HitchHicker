@@ -1,5 +1,4 @@
 from django.db import models
-from django_countries.fields import CountryField
 
 # Create your models here.
 class locationModel(models.Model):
@@ -46,10 +45,5 @@ class locationModel(models.Model):
     )
     country=models.CharField(max_length=50,  choices=CITY_CHOICES)
     city = models.CharField(max_length=50, choices=CITY_CHOICES)
-    def __str__(self):
+    def _str_(self):
         return self.country
-
-
-   
-
-   
