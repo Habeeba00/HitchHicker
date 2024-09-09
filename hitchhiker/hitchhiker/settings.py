@@ -185,11 +185,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'CustomUser.CustomUser'
 
-# settings.py
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# settings.py
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
