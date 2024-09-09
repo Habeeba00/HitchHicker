@@ -20,18 +20,8 @@ class Shipments(models.Model):
     class Meta:
         ordering = ['Date_Befor']
 
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        shipment = serializer.save()
-
-        trip_id = request.data.get('trip_id')  
-        try:
-            shipment.add_to_trip(trip_id)
-        except ValueError as e:
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-   
+    def save(self,*args, **kwargs):
+        self.Total_Price=self.Price*self.Quantity
+        self.Total_Weight=self.Weight*self.Quantity
+        
+    

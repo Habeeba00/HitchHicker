@@ -48,8 +48,7 @@ INSTALLED_APPS = [
     'CustomUser.apps.CustomuserConfig',
     'Shipments.apps.ShipmentsConfig',
     'Trips.apps.TripsConfig',
-    'Locations.apps.LocationsConfig',
-  
+    'Locations',  
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

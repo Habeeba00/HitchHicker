@@ -16,7 +16,7 @@ class ShipmentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Shipments
-        fields = ['id', 'From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price', 'Total_Price', 'Total_Weight', 'image', 'added_by', 'Trips']
+        fields = ['id', 'From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price', 'Total_Price', 'Total_Weight', 'image', 'added_by', 'trips']
 
     def create(self, validated_data):
         # Check if 'From' exists in the validated data

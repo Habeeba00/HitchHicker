@@ -28,3 +28,15 @@ class tripSerializers(serializers.ModelSerializer):
             return trip
     
 
+        
+        def update(self, instance, validated_data):
+            instance.From = validated_data.get('From', instance.From)
+            instance.To = validated_data.get('To', instance.To)
+            instance.depart_Date = validated_data.get('depart_Date', instance.depart_Date)
+            instance.depart_Time = validated_data.get('depart_Time', instance.depart_Time)
+            instance.FreeWeight = validated_data.get('FreeWeight', instance.FreeWeight)
+            instance.ComsumedWeight = validated_data.get('ComsumedWeight', instance.ComsumedWeight)
+            instance.TotalWeightTrip = instance.FreeWeight + instance.ComsumedWeight
+            
+            instance.save()
+            return instance
