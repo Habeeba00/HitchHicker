@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404
 class TripsViewset(viewsets.ModelViewSet):
     queryset = Trips.objects.all()
     serializer_class = tripSerializers
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
     search_fields=["From","To",'depart_Date','FreeWeight']

@@ -1,9 +1,6 @@
 from rest_framework import serializers
 from .models import Shipments
-from rest_framework.response import Response
-from rest_framework import status
 from CustomUser.serializers import SignUpSerializer
-from locations.serializers import locationSerializer
 from locations.models import locationModel
 
 
@@ -16,8 +13,8 @@ class ShipmentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Shipments
-        fields = ['id', 'From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price', 'Total_Price', 'Total_Weight', 'image', 'added_by', 'Trips']
-        exclude = ['trips'] 
+        fields = ['id', 'From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price', 'Total_Price', 'Total_Weight', 'image', 'added_by', 'trips']
+        # exclude = ['trips'] 
 
 
     def create(self, validated_data):

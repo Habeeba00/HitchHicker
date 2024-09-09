@@ -3,6 +3,8 @@ from .models import CustomUser
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+
 
 
 
@@ -61,3 +63,28 @@ class SignUpSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+    
+
+
+
+class RequestPasswordRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class OTPRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    token = serializers.CharField()
+
+    def validate(self, data):
+        email = data.get("email")
+        token = data.get("token")
+        user = CustomUser.objects.filter(email=email).first()
+
+        if user is None:
+            raise serializers.ValidationError("Invalid email address")
+
+        token_generator = PasswordResetTokenGenerator()
+        if not token_generator.check_token(user, token):
+            raise serializers.ValidationError("Invalid or expired token")
+
+        return data
