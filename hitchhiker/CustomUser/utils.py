@@ -17,7 +17,7 @@ def send_email(to_email,subject,body):
             s.starttls()
             s.ehlo()
 
-            s.login('habibamohamed2222009u665@gmail.com', 'Habiba@01019742210')  # Replace with your actual email password
+            s.login('habibamohamed2222009u665@gmail.com', 'Habiba@12345')  # Replace with your actual email password
 
             s.send_message(msg)
         

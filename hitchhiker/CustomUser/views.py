@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from datetime import timedelta
 from django.utils import timezone
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from .utills import send_email
+from .utils import send_email
 
 
 
