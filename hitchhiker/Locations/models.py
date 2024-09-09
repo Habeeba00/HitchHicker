@@ -3,6 +3,7 @@ from django_countries.fields import CountryField
 
 # Create your models here.
 class locationModel(models.Model):
+    
     CITY_CHOICES = (
         ('london', 'London'),
         ('paris', 'Paris'),
@@ -43,8 +44,10 @@ class locationModel(models.Model):
         ('Abu_Dhabi', 'Abu Dhabi'),
         ('Doha', 'Doha'),
     )
-    country=CountryField(blank_label="(select country)")
+    country=models.CharField(max_length=50,  choices=CITY_CHOICES)
     city = models.CharField(max_length=50, choices=CITY_CHOICES)
+    def __str__(self):
+        return self.country
 
 
    
