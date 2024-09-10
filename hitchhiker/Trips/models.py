@@ -12,3 +12,9 @@ class Trips(models.Model):
     ComsumedWeight=models.FloatField(default='0.00')
     TotalWeightTrip=models.FloatField(default='0.00')
     username=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
+    
+    
+    
+    def save(self, *args, **kwargs):
+        self.TotalWeightTrip = self.FreeWeight + self.ComsumedWeight
+        super().save(*args, **kwargs)

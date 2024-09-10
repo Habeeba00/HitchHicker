@@ -5,4 +5,4 @@ class locationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=locationModel
-        fields="_all_"
+        fields="__all__"

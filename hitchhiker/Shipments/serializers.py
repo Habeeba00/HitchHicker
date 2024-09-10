@@ -11,24 +11,28 @@ from locations.models import locationModel
 class ShipmentsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     added_by = SignUpSerializer(read_only=True)
-    From = serializers.PrimaryKeyRelatedField(queryset=locationModel.objects.all())
-    To = serializers.PrimaryKeyRelatedField(queryset=locationModel.objects.all())
-
+    From = serializers.SlugRelatedField(slug_field='country', queryset=locationModel.objects.all())
+    To = serializers.SlugRelatedField(slug_field='country', queryset=locationModel.objects.all())
+ 
     class Meta:
         model = Shipments
-        fields = ['id', 'From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price', 'Total_Price', 'Total_Weight', 'image', 'added_by', 'Trips']
-        exclude = ['trips'] 
+        fields = ['id','From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price', 'Total_Price', 'Total_Weight', 'image', 'added_by', 'trips']
+        read_only_fields = ['Total_Price', 'Total_Weight'] 
+
+
 
 
     def create(self, validated_data):
-        # Check if 'From' exists in the validated data
-        from_location = validated_data.get('From')
-        if from_location is None:
-            raise serializers.ValidationError("The 'From' field is required.")
-        shipment = Shipments.objects.create(**validated_data)
+        from_location = validated_data.pop('From')
+        to_location = validated_data.pop('To')
 
-        # Create the shipment
-        return shipment 
+        shipment = Shipments.objects.create(
+            From=from_location,
+            To=to_location,
+            **validated_data  
+        )
+
+        return shipment
 
     
     def update(self, instance, validated_data):

@@ -4,27 +4,51 @@ from Shipments.serializers import ShipmentsSerializer
 from rest_framework.response import Response
 from CustomUser.models import CustomUser
 from rest_framework import serializers
-
+from locations.models import locationModel
+from CustomUser.serializers import SignUpSerializer
 from Trips.models import Trips
+
+
 class tripSerializers(serializers.ModelSerializer):
-    shipments = ShipmentsSerializer(many=True, read_only=True)  # Add shipments to trip serializer
+    username = SignUpSerializer(read_only=True)
+
+    From = serializers.SlugRelatedField(slug_field='country', queryset=locationModel.objects.all())
+    To = serializers.SlugRelatedField(slug_field='country', queryset=locationModel.objects.all())
+
+    shipments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)  # assuming reverse relation
 
     class Meta:
-        model=Trips
-        fields = '__all__'
+        model = Trips
+        fields = ['id', 'From', 'To', 'depart_Date', 'depart_Time', 'FreeWeight', 'ComsumedWeight', 'TotalWeightTrip', 'username', 'shipments']
+        read_only_fields = ['TotalWeightTrip', 'shipments']
+        
+        
         def create(self, validated_data):
+            from_location = validated_data.pop('From')
+            to_location = validated_data.pop('To')
+
+            user = self.context['request'].user
+
             trip = Trips.objects.create(
-            From=validated_data['From'],
-            To=validated_data['To'],
-            depart_Date=validated_data['depart_Date'],
-            depart_Time=validated_data['depart_Time'],
-            FreeWeight=validated_data['FreeWeight'],
-            ComsumedWeight=validated_data.get('ComsumedWeight', 0.0), 
-            TotalWeightTrip=validated_data.get('TotalWeightTrip', 0.0)
-        )
-            
-            
+                From=from_location,
+                To=to_location,
+                username=user,
+                **validated_data
+            )
 
             return trip
     
-
+           
+           
+           
+        def update(self, instance, validated_data):
+            instance.From = validated_data.get('From', instance.From)
+            instance.To = validated_data.get('To', instance.To)
+            instance.depart_Date = validated_data.get('depart_Date', instance.depart_Date)
+            instance.depart_Time = validated_data.get('depart_Time', instance.depart_Time)
+            instance.FreeWeight = validated_data.get('FreeWeight', instance.FreeWeight)
+            instance.ComsumedWeight = validated_data.get('ComsumedWeight', instance.ComsumedWeight)
+            instance.TotalWeightTrip = instance.FreeWeight + instance.ComsumedWeight
+            
+            instance.save()
+            return instance
