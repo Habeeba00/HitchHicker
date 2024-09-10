@@ -12,8 +12,8 @@ from Trips.models import Trips
 class tripSerializers(serializers.ModelSerializer):
     username = SignUpSerializer(read_only=True)
 
-    From = serializers.SlugRelatedField(slug_field='country', queryset=locationModel.objects.all())
-    To = serializers.SlugRelatedField(slug_field='country', queryset=locationModel.objects.all())
+    From = serializers.PrimaryKeyRelatedField( queryset=locationModel.objects.all())
+    To = serializers.PrimaryKeyRelatedField( queryset=locationModel.objects.all())
 
     shipments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)  # assuming reverse relation
 

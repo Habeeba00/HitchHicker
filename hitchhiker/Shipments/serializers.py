@@ -8,8 +8,8 @@ from locations.models import locationModel
 class ShipmentsSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     added_by = SignUpSerializer(read_only=True)
-    From = serializers.SlugRelatedField(slug_field='country', queryset=locationModel.objects.all())
-    To = serializers.SlugRelatedField(slug_field='country', queryset=locationModel.objects.all())
+    From = serializers.PrimaryKeyRelatedField( queryset=locationModel.objects.all())
+    To = serializers.PrimaryKeyRelatedField( queryset=locationModel.objects.all())
  
     class Meta:
         model = Shipments

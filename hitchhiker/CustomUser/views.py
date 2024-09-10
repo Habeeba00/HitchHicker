@@ -26,7 +26,7 @@ class RequestPassword(generics.GenericAPIView):
 
             reset=PasswordReset(email=email,token=token,expiration_date=expiration_date)
             reset.save()
-            reset_url=f"http://localhost:8000/CustomUser/reset-password?token={token}&email={email}"
+            reset_url=f"http://localhost:8000/reset-password?token={token}&email={email}"
             email_message=\
                 f"you are receving this email because you requested"\
                 f"a password reset for your acount. \n\n"\
@@ -107,6 +107,9 @@ class SignUpView(generics.ListCreateAPIView):
         }
 
         return Response(response_data, status=status.HTTP_201_CREATED)
+    
+
+
 
 
 

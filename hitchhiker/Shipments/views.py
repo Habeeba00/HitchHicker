@@ -28,12 +28,14 @@ class ShipmentsView(viewsets.ModelViewSet):
         try:
             serializer = ShipmentsSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
+            print(request.user)
             shipment = serializer.save(added_by=request.user)
             
             data = serializer.data
             from_location = shipment.From 
+            print(from_location)
             to_location = shipment.To  
-            data['username'] = request.user.username
+            data['added_by'] = request.user.username
             data['From'] = from_location.city 
             data['To'] = to_location.city
             
