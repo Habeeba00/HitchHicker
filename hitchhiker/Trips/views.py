@@ -8,16 +8,21 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from CustomUser.models import CustomUser
 from django.shortcuts import get_object_or_404
+import django_filters
+
+
 
 class TripsViewset(viewsets.ModelViewSet):
     queryset = Trips.objects.all()
     serializer_class = tripSerializers
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
-    search_fields=["From","To",'depart_Date','FreeWeight']
-    ordering_fields=['depart_Date',"Shipment_Name"]
+    search_fields = ["From__name", "To__name", "depart_Date", "FreeWeight"]
+    ordering_fields = ['depart_Date', 'From__name', 'To__name', 'FreeWeight']
+
     ordering = ['depart_Date']
+
     filterset_class = TripsFilter
     
     

@@ -18,8 +18,8 @@ class ShipmentsView(viewsets.ModelViewSet):
     serializer_class=ShipmentsSerializer
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
-    search_fields=["From","To",'Date_Befor','Weight']
-    ordering_fields=['Date_Befor',"Shipment_Name"]
+    search_fields=["From__name","To__name",'Date_Befor','Weight']
+    ordering_fields=['Date_Befor',"Weight","From__name","To__name"]
     ordering = ['Date_Befor']
     filterset_class = ShipmentsFilter
 

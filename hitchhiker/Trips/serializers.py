@@ -14,16 +14,16 @@ class tripSerializers(serializers.ModelSerializer):
 
     From = serializers.SlugRelatedField(slug_field='country', queryset=locationModel.objects.all())
     To = serializers.SlugRelatedField(slug_field='country', queryset=locationModel.objects.all())
-
-    shipments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)  # assuming reverse relation
+    shipments = serializers.PrimaryKeyRelatedField(queryset=Shipments.objects.all(), many=True, required=False)
 
     class Meta:
         model = Trips
-        fields = ['id', 'From', 'To', 'depart_Date', 'depart_Time', 'FreeWeight', 'ComsumedWeight', 'TotalWeightTrip', 'username', 'shipments']
+        fields = ['id', 'From', 'To','depart_Date', 'depart_Time', 'FreeWeight', 'ComsumedWeight', 'TotalWeightTrip', 'username', 'shipments']
         read_only_fields = ['TotalWeightTrip', 'shipments']
         
         
         def create(self, validated_data):
+            shipments_data = validated_data.pop('shipments', [])
             from_location = validated_data.pop('From')
             to_location = validated_data.pop('To')
 
@@ -35,13 +35,15 @@ class tripSerializers(serializers.ModelSerializer):
                 username=user,
                 **validated_data
             )
-
+            trip.shipments.set(shipments_data)  
+            trip.save()
             return trip
     
            
            
            
         def update(self, instance, validated_data):
+            shipments_data = validated_data.pop('shipments', None)
             instance.From = validated_data.get('From', instance.From)
             instance.To = validated_data.get('To', instance.To)
             instance.depart_Date = validated_data.get('depart_Date', instance.depart_Date)
@@ -51,4 +53,6 @@ class tripSerializers(serializers.ModelSerializer):
             instance.TotalWeightTrip = instance.FreeWeight + instance.ComsumedWeight
             
             instance.save()
+            if shipments_data is not None:
+                instance.shipments.set(shipments_data)         
             return instance
