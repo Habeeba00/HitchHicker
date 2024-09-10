@@ -13,9 +13,21 @@ class CustomUser(AbstractUser,PermissionsMixin):
     is_staff=models.BooleanField(default=False)
     is_active= models.BooleanField(default=True)
 
-    otp = models.CharField(
-        max_length=6, null=True, blank=True)
-    
+
+
+
+class PasswordReset(models.Model):
+    email = models.EmailField()
+    token = models.CharField(max_length=255)
+    expiration_date = models.DateTimeField()
+
+
+
+
+class OTP(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    otp = models.CharField(max_length=6, null=True, blank=True)
+
     def save(self, *args, **kwargs):
         number_list = [x for x in range(10)]
         code_items_for_otp = []
@@ -24,8 +36,7 @@ class CustomUser(AbstractUser,PermissionsMixin):
             num = random.choice(number_list)
             code_items_for_otp.append(num)
 
-        code_string = "".join(str(item)
-                              for item in code_items_for_otp) 
+        code_string = "".join(str(item) for item in code_items_for_otp)
         self.otp = code_string
         super().save(*args, **kwargs)
 

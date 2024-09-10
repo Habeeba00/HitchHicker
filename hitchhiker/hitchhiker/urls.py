@@ -16,14 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+# from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView,)
 from django.conf import settings
 from django.conf.urls.static import static
-from CustomUser.views import reset_request,reset_password
-
 
 
 urlpatterns = [
@@ -31,12 +26,10 @@ urlpatterns = [
     path('CustomUser/',include('CustomUser.urls')),
     path('Shipments/',include('Shipments.urls')),
     path('Trips/',include('Trips.urls')),
-    path('locations/',include('locations.urls')),
+    path('Locations/',include('locations.urls')),
 
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('reset-request/', reset_request, name='reset-request'),
-    path('reset-password/', reset_password, name='reset-password'),
+    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
