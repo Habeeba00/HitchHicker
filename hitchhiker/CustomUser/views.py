@@ -1,7 +1,7 @@
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny 
-from .serializers import MyTokenObtainPairSerializer,SignUpSerializer,RequestPasswordRequestSerializer,OTPRequestSerializer
+from .serializers import MyTokenObtainPairSerializer,SignUpSerializer,RequestPasswordRequestSerializer,OTPRequestSerializer,ResetPasswordWithOTPSerializer
 from .models import CustomUser,PasswordReset,OTP
 from rest_framework_simplejwt.views import TokenObtainPairView
 from datetime import timedelta
@@ -59,11 +59,27 @@ class OTPRequestView(generics.GenericAPIView):
         return Response({"otp": otp_instance.otp}, status=status.HTTP_200_OK)
 
 
-        
+class ResetPasswordWithOTPView(generics.GenericAPIView):
+    serializer_class = ResetPasswordWithOTPSerializer
 
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
+        email = serializer.validated_data['email']
+        new_password = serializer.validated_data['new_password']
 
+        # Get the user instance
+        user = CustomUser.objects.get(email=email)
 
+        # Reset the password
+        user.set_password(new_password)
+        user.save()
+
+        # Optionally delete the OTP after use
+        OTP.objects.filter(user=user).delete()
+
+        return Response({'message': 'Password reset successfully.'}, status=status.HTTP_200_OK)
 
 
 

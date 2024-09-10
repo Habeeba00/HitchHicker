@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser
+from .models import CustomUser,OTP
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -85,5 +85,28 @@ class OTPRequestSerializer(serializers.Serializer):
         token_generator = PasswordResetTokenGenerator()
         if not token_generator.check_token(user, token):
             raise serializers.ValidationError("Invalid or expired token")
+
+        return data
+    
+
+class ResetPasswordWithOTPSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    otp = serializers.CharField(max_length=6)
+    new_password = serializers.CharField(write_only=True, min_length=8)
+
+    def validate(self, data):
+        email = data.get('email')
+        otp = data.get('otp')
+        new_password = data.get('new_password')
+
+        # Ensure email exists
+        if not CustomUser.objects.filter(email=email).exists():
+            raise serializers.ValidationError("User with this email not found.")
+
+        # Ensure OTP matches
+        user = CustomUser.objects.get(email=email)
+        otp_instance = OTP.objects.filter(user=user, otp=otp).first()
+        if not otp_instance:
+            raise serializers.ValidationError("Invalid OTP.")
 
         return data
