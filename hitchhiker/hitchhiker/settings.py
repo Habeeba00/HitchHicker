@@ -193,6 +193,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'habibamohamed2222009u665@gmail.com'
-EMAIL_HOST_PASSWORD = 'Habiba@01019742210'
+EMAIL_HOST_PASSWORD = 'izat izyu fmew unqp'
 
 

@@ -16,11 +16,7 @@ class Shipments(models.Model):
     Total_Weight=models.FloatField(null=True,blank=True)
     image=models.ImageField(upload_to='images/')
     added_by=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
-<<<<<<< HEAD
-    trips=models.ForeignKey(Trips,on_delete=models.CASCADE,null=True,blank=True)
-=======
     trips=models.ForeignKey(Trips,on_delete=models.CASCADE,null=True,blank=True,related_name='shipments')
->>>>>>> 75b81d8a95a7366119c581ae0d5fcedf521acc2d
     class Meta:
         ordering = ['Date_Befor']
     

@@ -13,15 +13,10 @@ class ShipmentsSerializer(serializers.ModelSerializer):
  
     class Meta:
         model = Shipments
-<<<<<<< HEAD
-        fields = ['id', 'From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price', 'Total_Price', 'Total_Weight', 'image', 'added_by', 'trips']
-        # exclude = ['trips'] 
-=======
         fields = ['id','From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price', 'Total_Price', 'Total_Weight', 'image', 'added_by', 'trips']
         read_only_fields = ['Total_Price', 'Total_Weight'] 
 
 
->>>>>>> 75b81d8a95a7366119c581ae0d5fcedf521acc2d
 
 
     def create(self, validated_data):

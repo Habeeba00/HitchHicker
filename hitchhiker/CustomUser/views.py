@@ -26,7 +26,7 @@ class RequestPassword(generics.GenericAPIView):
 
             reset=PasswordReset(email=email,token=token,expiration_date=expiration_date)
             reset.save()
-            reset_url=f"={token}"
+            reset_url=f"http://localhost:8000/CustomUser/reset-password?token={token}&email={email}"
             email_message=\
                 f"you are receving this email because you requested"\
                 f"a password reset for your acount. \n\n"\
@@ -34,7 +34,7 @@ class RequestPassword(generics.GenericAPIView):
                 f"{reset_url}\n\n" f"this link will expire in {48} hours"
             
             send_email(email,'passord reset requested',email_message)
-            return Response({'success':token},status=status.HTTP_200_OK)
+            return Response({'success': "Email sent successfully!"},status=status.HTTP_200_OK)
         else:
             return Response({"error":"User with this email address not found"},
                             status=status.HTTP_404_NOT_FOUND)
