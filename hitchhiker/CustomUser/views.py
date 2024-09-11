@@ -8,6 +8,13 @@ from datetime import timedelta
 from django.utils import timezone
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from .utils import send_email
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework.permissions import IsAuthenticated
+
+
+
 
 
 
@@ -26,7 +33,7 @@ class RequestPassword(generics.GenericAPIView):
 
             reset=PasswordReset(email=email,token=token,expiration_date=expiration_date)
             reset.save()
-            reset_url=f"={token}"
+            reset_url=f"http://localhost:8000/reset-password?token={token}&email={email}"
             email_message=\
                 f"you are receving this email because you requested"\
                 f"a password reset for your acount. \n\n"\
@@ -34,7 +41,7 @@ class RequestPassword(generics.GenericAPIView):
                 f"{reset_url}\n\n" f"this link will expire in {48} hours"
             
             send_email(email,'passord reset requested',email_message)
-            return Response({'success':token},status=status.HTTP_200_OK)
+            return Response({'success': "Email sent successfully!"},status=status.HTTP_200_OK)
         else:
             return Response({"error":"User with this email address not found"},
                             status=status.HTTP_404_NOT_FOUND)
@@ -83,11 +90,9 @@ class ResetPasswordWithOTPView(generics.GenericAPIView):
 
 
 
-#Login User
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-#Register User
 class SignUpView(generics.ListCreateAPIView):
     queryset = CustomUser.objects.all()
     permission_classes = [AllowAny]
@@ -107,9 +112,15 @@ class SignUpView(generics.ListCreateAPIView):
         }
 
         return Response(response_data, status=status.HTTP_201_CREATED)
+    
 
 
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        if request.user and request.user.is_authenticated:
+            request.session.flush()
 
-
-
-        
+            return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+    
+        return Response({"detail": "User not authenticated."}, status=status.HTTP_400_BAD_REQUEST)

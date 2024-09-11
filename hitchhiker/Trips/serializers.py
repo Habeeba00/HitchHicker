@@ -11,10 +11,10 @@ from Trips.models import Trips
 class tripSerializers(serializers.ModelSerializer):
     username = SignUpSerializer(read_only=True)
 
-    From = serializers.PrimaryKeyRelatedField(queryset=locationModel.objects.all())
-    To = serializers.PrimaryKeyRelatedField(queryset=locationModel.objects.all())
-    
-    shipments = ShipmentsSerializer(many=True, read_only=True)  
+    From = serializers.PrimaryKeyRelatedField( queryset=locationModel.objects.all())
+    To = serializers.PrimaryKeyRelatedField( queryset=locationModel.objects.all())
+
+    shipments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)  # assuming reverse relation
 
     class Meta:
         model = Trips
