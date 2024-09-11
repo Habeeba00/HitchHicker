@@ -59,30 +59,3 @@ class ShipmentsView(viewsets.ModelViewSet):
     
    
     
-# def update(self, request, *args, **kwargs):
-#     partial = kwargs.pop('partial', False)
-#     instance = self.get_object()
-#     serializer = self.get_serializer(instance, data=request.data, partial=partial)
-#     serializer.is_valid(raise_exception=True)
-    
-#     instance_Name = instance.Shipment_Name
-    
-#     serializer.save()
-
-#     trip_data = request.data.get('trip')  
-#     if trip_data:
-#         trip_serializer = tripSerializers(data=trip_data)
-#         if trip_serializer.is_valid():
-#             trip_instance = trip_serializer.save()
-#             instance.trip = trip_instance
-#             instance.save()
-#         else:
-#             return Response(trip_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    return Response(
-        {"message": f"The shipment {instance_Name} has been updated successfully with the trip.", "data": serializer.data},
-        status=status.HTTP_200_OK
-    )
-
-
-    
