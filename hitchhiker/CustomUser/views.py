@@ -8,6 +8,13 @@ from datetime import timedelta
 from django.utils import timezone
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from .utils import send_email
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework.permissions import IsAuthenticated
+
+
+
 
 
 
@@ -83,11 +90,9 @@ class ResetPasswordWithOTPView(generics.GenericAPIView):
 
 
 
-#Login User
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
-#Register User
 class SignUpView(generics.ListCreateAPIView):
     queryset = CustomUser.objects.all()
     permission_classes = [AllowAny]
@@ -110,9 +115,12 @@ class SignUpView(generics.ListCreateAPIView):
     
 
 
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        if request.user and request.user.is_authenticated:
+            request.session.flush()
 
-
-
-
-
-        
+            return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+    
+        return Response({"detail": "User not authenticated."}, status=status.HTTP_400_BAD_REQUEST)
