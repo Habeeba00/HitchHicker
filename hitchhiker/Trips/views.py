@@ -7,24 +7,71 @@ from Trips.filters import TripsFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from CustomUser.models import CustomUser
-from django.shortcuts import get_object_or_404
-import django_filters
-
+from Shipments.filters import ShipmentsFilter
 
 
 class TripsViewset(viewsets.ModelViewSet):
     queryset = Trips.objects.all()
     serializer_class = tripSerializers
     permission_classes = [IsAuthenticated]
-
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
-    search_fields = ["From__name", "To__name", "depart_Date", "FreeWeight"]
-    ordering_fields = ['depart_Date', 'From__name', 'To__name', 'FreeWeight']
-
+    
+    search_fields=["From__name","To__name", "depart_Date", "FreeWeight"]
+    
+    ordering_fields = ['depart_Date', 'From__name', 'To__name']
+    
     ordering = ['depart_Date']
-
     filterset_class = TripsFilter
     
+    def retrieve(self, request, *args, **kwargs):
+        trip = self.get_object()
+
+        shipments = trip.shipments.all()  
+        
+        shipment_names = [shipment.Shipment_Name for shipment in shipments]
+
+        serializer = self.get_serializer(trip)
+
+        data = serializer.data
+        data['shipments']=shipment_names
+
+        return Response(data)
+    
+    
+    
+    
+    
+    # def list(self, request, *args, **kwargs):
+    #     queryset = self.filter_queryset(self.get_queryset())
+
+    #     page = self.paginate_queryset(queryset)
+    #     if page is not None:
+    #         serializer = self.get_serializer(page, many=True)
+    #         return self.get_paginated_response(serializer.data)
+
+    #     serializer = self.get_serializer(queryset, many=True)
+    #     return Response(serializer.data)
+
+    
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # trips = self.get_queryset()
+
+        serializer = self.get_serializer(queryset, many=True)
+
+        data = serializer.data
+
+        for trip_data in data:
+            trip = queryset.get(id=trip_data['id'])
+
+            shipments = trip.shipments.all() 
+            shipment_names = [shipment.Shipment_Name for shipment in shipments]
+            
+            trip_data['shipments'] = shipment_names
+
+        return Response(data)
     
     def create(self, request, *args, **kwargs):
         if request.method=="POST":

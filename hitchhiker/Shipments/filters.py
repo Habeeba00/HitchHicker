@@ -6,11 +6,12 @@ from .models import Shipments
 
 class ShipmentsFilter(filters.FilterSet):
     Date_Befor=django_filters.DateFilter(field_name="Date_Befor",lookup_expr="lte")
-    Weight=django_filters.NumberFilter(field_name='Weight',lookup_expr='lte')
+    Weight=django_filters.NumberFilter(field_name='Weight',lookup_expr='gte')
     From=django_filters.CharFilter(method='filter_from')
     To=django_filters.CharFilter(method='filter_to')
     
-
+    
+    
     class Meta:
         model=Shipments
         fields =['From','To','Date_Befor','Weight']

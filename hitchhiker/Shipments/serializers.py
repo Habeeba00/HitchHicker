@@ -13,15 +13,10 @@ class ShipmentsSerializer(serializers.ModelSerializer):
  
     class Meta:
         model = Shipments
-<<<<<<< HEAD
-        fields = ['id', 'From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price', 'Total_Price', 'Total_Weight', 'image', 'added_by', 'trips']
-        # exclude = ['trips'] 
-=======
-        fields = ['id','From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price', 'Total_Price', 'Total_Weight', 'image', 'added_by', 'trips']
-        read_only_fields = ['Total_Price', 'Total_Weight'] 
+        fields = ['id','From', 'To', 'Date_Befor', 'Shipment_Name', 'Quantity', 'Weight', 'Price', 'Reward', 'Total_Weight', 'image', 'added_by', 'trips']
+        read_only_fields = ['Reward', 'Total_Weight'] 
 
 
->>>>>>> 75b81d8a95a7366119c581ae0d5fcedf521acc2d
 
 
     def create(self, validated_data):
@@ -44,7 +39,7 @@ class ShipmentsSerializer(serializers.ModelSerializer):
         instance.Date_Befor = validated_data.get('Date_Befor', instance.Date_Befor)
         instance.Quantity = validated_data.get('Quantity', instance.Quantity)
         instance.Price = validated_data.get('Price', instance.Price)
-        instance.Total_Price = instance.Price * instance.Quantity
+        instance.Reward = instance.Price * instance.Quantity
         instance.Weight = validated_data.get('Weight', instance.Weight)
         instance.Total_Weight = instance.Quantity * instance.Weight
         instance.image = validated_data.get('image', instance.image)
@@ -57,7 +52,7 @@ class ShipmentsSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(f"Not enough free weight on the trip. Available: {trip_obj.FreeWeight} kg")
 
             trip_obj.ComsumedWeight += instance.Total_Weight
-            trip_obj.TotalWeightTrip += instance.Total_Weight
+            trip_obj.FreeWeight -= instance.Total_Weight
 
             instance.trips = trip_obj
             trip_obj.save()

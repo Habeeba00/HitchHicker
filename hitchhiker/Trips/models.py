@@ -2,7 +2,6 @@ from django.db import models
 from CustomUser.models import CustomUser
 from locations.models import locationModel
 
-
 class Trips(models.Model):
     From= models.ForeignKey(locationModel, on_delete=models.CASCADE, related_name="trips_from_location") 
     To= models.ForeignKey(locationModel, on_delete=models.CASCADE, related_name="trips_to_location")
@@ -16,5 +15,11 @@ class Trips(models.Model):
     
     
     def save(self, *args, **kwargs):
+        self.FreeWeight = float(self.FreeWeight) if self.FreeWeight is not None else 0.0
+        self.ComsumedWeight = float(self.ComsumedWeight) if self.ComsumedWeight is not None else 0.0
+        
+        # Calculate TotalWeightTrip
         self.TotalWeightTrip = self.FreeWeight + self.ComsumedWeight
+        
+        # Call the parent's save method
         super().save(*args, **kwargs)

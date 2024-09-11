@@ -12,15 +12,11 @@ class Shipments(models.Model):
     Quantity=models.IntegerField()
     Weight=models.FloatField()
     Price=models.FloatField()
-    Total_Price=models.FloatField(null=True,blank=True)
+    Reward=models.FloatField(null=True,blank=True)
     Total_Weight=models.FloatField(null=True,blank=True)
     image=models.ImageField(upload_to='images/')
     added_by=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
-<<<<<<< HEAD
-    trips=models.ForeignKey(Trips,on_delete=models.CASCADE,null=True,blank=True)
-=======
     trips=models.ForeignKey(Trips,on_delete=models.CASCADE,null=True,blank=True,related_name='shipments')
->>>>>>> 75b81d8a95a7366119c581ae0d5fcedf521acc2d
     class Meta:
         ordering = ['Date_Befor']
     
@@ -29,7 +25,7 @@ class Shipments(models.Model):
     
     
     def save(self, *args, **kwargs):
-        self.Total_Price = self.Price * self.Quantity
+        self.Reward = self.Price * self.Quantity
         self.Total_Weight = self.Weight * self.Quantity
         super(Shipments, self).save(*args, **kwargs)
         
