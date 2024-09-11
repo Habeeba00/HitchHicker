@@ -12,16 +12,12 @@ from Trips.models import Trips
 class tripSerializers(serializers.ModelSerializer):
     username = SignUpSerializer(read_only=True)
 
-    From = serializers.SlugRelatedField(slug_field='country', queryset=locationModel.objects.all())
-    To = serializers.SlugRelatedField(slug_field='country', queryset=locationModel.objects.all())
+    From = serializers.PrimaryKeyRelatedField( queryset=locationModel.objects.all())
+    To = serializers.PrimaryKeyRelatedField( queryset=locationModel.objects.all())
 
     shipments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)  # assuming reverse relation
 
     class Meta:
-<<<<<<< HEAD
-        model=Trips
-        fields = '__all__'
-=======
         model = Trips
         fields = ['id', 'From', 'To', 'depart_Date', 'depart_Time', 'FreeWeight', 'ComsumedWeight', 'TotalWeightTrip', 'username', 'shipments']
         read_only_fields = ['TotalWeightTrip', 'shipments']
@@ -56,4 +52,3 @@ class tripSerializers(serializers.ModelSerializer):
             
             instance.save()
             return instance
->>>>>>> 75b81d8a95a7366119c581ae0d5fcedf521acc2d

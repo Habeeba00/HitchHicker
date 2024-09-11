@@ -6,4 +6,4 @@ from rest_framework.permissions import IsAuthenticated
 class locationViewset(viewsets.ModelViewSet):
     queryset = locationModel.objects.all()
     serializer_class = locationSerializer
-    permission_classes=[IsAuthenticated]
+    # permission_classes=[IsAuthenticated]

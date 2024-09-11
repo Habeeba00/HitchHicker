@@ -9,6 +9,7 @@ from rest_framework.filters import SearchFilter,OrderingFilter
 from .filters import ShipmentsFilter
 from django.shortcuts import get_object_or_404
 from Trips.serializers import tripSerializers
+from .permissions import IsOwnerUser
 
 
 
@@ -16,7 +17,7 @@ from Trips.serializers import tripSerializers
 class ShipmentsView(viewsets.ModelViewSet):
     queryset=Shipments.objects.all()
     serializer_class=ShipmentsSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsOwnerUser]
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
     search_fields=["From","To",'Date_Befor','Weight']
     ordering_fields=['Date_Befor',"Shipment_Name"]
@@ -28,12 +29,14 @@ class ShipmentsView(viewsets.ModelViewSet):
         try:
             serializer = ShipmentsSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
+            print(request.user)
             shipment = serializer.save(added_by=request.user)
             
             data = serializer.data
             from_location = shipment.From 
+            print(from_location)
             to_location = shipment.To  
-            data['username'] = request.user.username
+            data['added_by'] = request.user.username
             data['From'] = from_location.city 
             data['To'] = to_location.city
             
@@ -50,24 +53,7 @@ class ShipmentsView(viewsets.ModelViewSet):
         instance.delete()
         return Response({"message": f"Shipment with id {instance_id} deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
     
-    def update(self, request, pk):
-        shipment = get_object_or_404(Shipments, pk=pk)
-        
-        serializer = ShipmentsSerializer(shipment, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()  
-
-        return Response(serializer.data)
-    
-    def partial_update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    
-    
+   
     
 def update(self, request, *args, **kwargs):
     partial = kwargs.pop('partial', False)
@@ -98,4 +84,6 @@ def update(self, request, *args, **kwargs):
         {"message": f"The shipment {instance_Name} has been updated successfully with the trip.", "data": serializer.data},
         status=status.HTTP_200_OK
     )
+
+
     
