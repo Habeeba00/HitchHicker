@@ -7,7 +7,6 @@ from CustomUser.models import CustomUser
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter,OrderingFilter
 from .filters import ShipmentsFilter
-from django.shortcuts import get_object_or_404
 from Trips.serializers import tripSerializers
 from .permissions import IsOwnerUser
 

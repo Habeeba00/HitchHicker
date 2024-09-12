@@ -7,12 +7,11 @@ from Trips.filters import TripsFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from CustomUser.models import CustomUser
-from django.shortcuts import get_object_or_404
-
+from .permissions import IsOwnerUser
 class TripsViewset(viewsets.ModelViewSet):
     queryset = Trips.objects.all()
     serializer_class = tripSerializers
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsOwnerUser]
 
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
     search_fields=["From","To",'depart_Date','FreeWeight']
@@ -45,15 +44,7 @@ class TripsViewset(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data, status=status.HTTP_200_OK)
-              
-    # def update(self, request, pk):
-    #     shipment = get_object_or_404(Trips, pk=pk)
-        
-    #     serializer = tripSerializers(shipment, data=request.data, partial=True)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save()  
-
-    #     return Response(serializer.data)     
+               
     
     
     def destroy(self, request, *args, **kwargs):
