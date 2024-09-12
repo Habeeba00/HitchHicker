@@ -17,5 +17,5 @@ class Trips(models.Model):
     def save (self,*args,**kwargs):
         self.FreeWeight=float(self.FreeWeight)if self.FreeWeight is not None else 0.0
         self.ComsumedWeight=float(self.ComsumedWeight)if self.ComsumedWeight is not None else 0.0
-        self.TotalWeightTrip = self.FreeWeight + self.ComsumedWeight
+        self.TotalWeightTrip = self.FreeWeight +self.ComsumedWeight
         super().save(*args, **kwargs)
