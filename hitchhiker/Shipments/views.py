@@ -76,7 +76,3 @@ class ShipmentsView(viewsets.ModelViewSet):
         instance.delete()
         return Response({"message": f"Shipment with id {instance_id} deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
     
-
-
-
-    

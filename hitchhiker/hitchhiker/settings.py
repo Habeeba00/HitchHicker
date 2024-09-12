@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'Shipments.apps.ShipmentsConfig',
     'Trips.apps.TripsConfig',
     'locations',
+    'corsheaders',
+
 ]
 
 REST_FRAMEWORK = {
@@ -63,7 +65,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+   
+    
 }
 from datetime import timedelta
 
@@ -109,7 +113,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000", 
+    "http://127.0.0.1:5173",  
+]
+
 
 ROOT_URLCONF = 'hitchhiker.urls'
 

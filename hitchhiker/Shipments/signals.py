@@ -9,6 +9,6 @@ from django.core.exceptions import ValidationError
 
 @receiver(post_save, sender=Shipments)
 def calculate_totals(sender, instance, **kwargs):
-    instance.Total_Price = instance.Quantity * instance.Price
+    instance.Reward = instance.Quantity * instance.Price
     instance.Total_Weight = instance.Quantity * instance.Weight
     

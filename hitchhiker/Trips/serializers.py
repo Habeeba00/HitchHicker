@@ -2,19 +2,18 @@ from rest_framework import serializers
 from locations.models import locationModel
 from CustomUser.serializers import SignUpSerializer
 from Trips.models import Trips
-
+from Shipments.serializers import ShipmentsSerializer
 
 class tripSerializers(serializers.ModelSerializer):
     username = SignUpSerializer(read_only=True)
 
     From = serializers.PrimaryKeyRelatedField( queryset=locationModel.objects.all())
     To = serializers.PrimaryKeyRelatedField( queryset=locationModel.objects.all())
-
-    shipments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)  # assuming reverse relation
+    ship = ShipmentsSerializer(many=True, required=False)  
 
     class Meta:
         model = Trips
-        fields = ['id', 'From', 'To', 'depart_Date', 'depart_Time', 'FreeWeight', 'ComsumedWeight', 'TotalWeightTrip', 'username', 'shipments']
+        fields = ['id', 'From', 'To', 'depart_Date', 'depart_Time','FreeWeight', 'ComsumedWeight', 'TotalWeightTrip', 'username', 'ship']
         read_only_fields = ['TotalWeightTrip', 'shipments']
         
 
