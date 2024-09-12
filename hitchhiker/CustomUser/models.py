@@ -9,7 +9,7 @@ class CustomUser(AbstractUser,PermissionsMixin):
     last_name=models.CharField(max_length=30)
     username=models.CharField(max_length=30,unique=True)
     email=models.EmailField(unique=True)
-    phone=models.IntegerField(unique=True)
+    phone=models.IntegerField()
     is_staff=models.BooleanField(default=False)
     is_active= models.BooleanField(default=True)
     is_owner=models.BooleanField(default=False)
