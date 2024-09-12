@@ -14,7 +14,8 @@ class Trips(models.Model):
     username=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
     
     
-    
-    def save(self, *args, **kwargs):
+    def save (self,*args,**kwargs):
+        self.FreeWeight=float(self.FreeWeight)if self.FreeWeight is not None else 0.0
+        self.ComsumedWeight=float(self.ComsumedWeight)if self.ComsumedWeight is not None else 0.0
         self.TotalWeightTrip = self.FreeWeight + self.ComsumedWeight
         super().save(*args, **kwargs)
