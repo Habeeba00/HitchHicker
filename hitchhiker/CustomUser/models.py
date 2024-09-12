@@ -9,7 +9,7 @@ class CustomUser(AbstractUser,PermissionsMixin):
     last_name=models.CharField(max_length=30)
     username=models.CharField(max_length=30,unique=True)
     email=models.EmailField(unique=True)
-    phone=models.IntegerField()
+    phone=models.IntegerField(unique=True)
     is_staff=models.BooleanField(default=False)
     is_active= models.BooleanField(default=True)
     is_owner=models.BooleanField(default=False)
@@ -42,10 +42,10 @@ class OTP(models.Model):
         super().save(*args, **kwargs)
 
 
-class BlacklistToken(models.Model):
-    token = models.CharField(max_length=255, unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+# class BlacklistToken(models.Model):
+#     token = models.CharField(max_length=255, unique=True)
+#     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.token
+#     def __str__(self):
+#         return self.token
 

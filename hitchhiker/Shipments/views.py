@@ -44,6 +44,30 @@ class ShipmentsView(viewsets.ModelViewSet):
             return Response({'error': 'CustomUser with given id not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        data = serializer.data
+
+        # Modify the 'username' field to return only the username string
+        if isinstance(data['username'], dict):
+            data['username'] = data['username']['username']
+
+        return Response(data)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        data = serializer.data
+
+        # Modify the 'username' field for each trip in the list
+        for shipment in data:
+            if isinstance(trip['username'], dict):
+                shipment['username'] = shipment['username']['username']
+
+        return Response(data)
 
 
     def destroy(self, request, *args, **kwargs):
@@ -52,37 +76,7 @@ class ShipmentsView(viewsets.ModelViewSet):
         instance.delete()
         return Response({"message": f"Shipment with id {instance_id} deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
     
-   
-    
-def update(self, request, *args, **kwargs):
-    partial = kwargs.pop('partial', False)
-    instance = self.get_object()
-    serializer = self.get_serializer(instance, data=request.data, partial=partial)
-    serializer.is_valid(raise_exception=True)
-    
-    # Store the shipment name before updating
-    instance_Name = instance.Shipment_Name
-    
-    # Save the shipment update
-    serializer.save()
 
-    # Handle Trip Data if provided in the request
-    trip_data = request.data.get('trip')  # Assuming the trip data comes in 'trip' key
-    if trip_data:
-        # Validate and process trip data
-        trip_serializer = tripSerializers(data=trip_data)
-        if trip_serializer.is_valid():
-            trip_instance = trip_serializer.save()
-            # Add the trip to the shipment instance
-            instance.trip = trip_instance
-            instance.save()
-        else:
-            return Response(trip_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    return Response(
-        {"message": f"The shipment {instance_Name} has been updated successfully with the trip.", "data": serializer.data},
-        status=status.HTTP_200_OK
-    )
 
 
     

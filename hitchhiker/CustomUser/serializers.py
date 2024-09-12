@@ -11,12 +11,18 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
+        # Get the token and add custom claims
         token = super().get_token(user)
-
         token['username'] = user.username
         token['email'] = user.email
-
         return token
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        # Return only the access token
+        return {
+            'access': data['access']
+        }
 
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -48,7 +54,6 @@ class SignUpSerializer(serializers.ModelSerializer):
         return attrs
     
     def create(self, validated_data):
-        # Remove the confirm_password key-value pair
         validated_data.pop('confirm_password')
 
         user = CustomUser.objects.create(

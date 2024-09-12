@@ -17,7 +17,7 @@ class tripSerializers(serializers.ModelSerializer):
         fields = ['id', 'From', 'To', 'depart_Date', 'depart_Time', 'FreeWeight', 'ComsumedWeight', 'TotalWeightTrip', 'username', 'shipments']
         read_only_fields = ['TotalWeightTrip', 'shipments']
         
-        
+
         def create(self, validated_data):
             from_location = validated_data.pop('From')
             to_location = validated_data.pop('To')
