@@ -44,6 +44,30 @@ class ShipmentsView(viewsets.ModelViewSet):
             return Response({'error': 'CustomUser with given id not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        data = serializer.data
+
+        # Modify the 'username' field to return only the username string
+        if isinstance(data['username'], dict):
+            data['username'] = data['username']['username']
+
+        return Response(data)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        data = serializer.data
+
+        # Modify the 'username' field for each trip in the list
+        for shipment in data:
+            if isinstance(trip['username'], dict):
+                shipment['username'] = shipment['username']['username']
+
+        return Response(data)
 
 
     def destroy(self, request, *args, **kwargs):
@@ -52,5 +76,3 @@ class ShipmentsView(viewsets.ModelViewSet):
         instance.delete()
         return Response({"message": f"Shipment with id {instance_id} deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
     
-   
- 

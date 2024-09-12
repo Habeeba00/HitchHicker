@@ -42,10 +42,10 @@ class OTP(models.Model):
         super().save(*args, **kwargs)
 
 
-class BlacklistToken(models.Model):
-    token = models.CharField(max_length=255, unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+# class BlacklistToken(models.Model):
+#     token = models.CharField(max_length=255, unique=True)
+#     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.token
+#     def __str__(self):
+#         return self.token
 

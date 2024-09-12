@@ -7,6 +7,3 @@ class IsOwnerUser(BasePermission):
         if request.method =='PUT' or request.method == 'PATCH' or request.method =='DELETE'or request.method =='GET':
                 return request.user == obj.username 
      
-     
-     
-     
